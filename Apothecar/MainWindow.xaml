@@ -2,19 +2,23 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Apothecary
-        " Height="350" Width="525">
+        " Height="234.414" Width="454.784" MinWidth="525" MinHeight="350">
     <Grid>
-        <TabControl HorizontalAlignment="Left" Height="299" Margin="10,10,0,0" VerticalAlignment="Top" Width="497">
+        <TabControl Height="299" Margin="10,10,10,0" VerticalAlignment="Top">
             <TabItem Header="List">
                 <Grid Background="#FFE5E5E5">
-                    <ListBox HorizontalAlignment="Left" Height="70" Margin="10,38,0,0" VerticalAlignment="Top" Width="471"/>
-                    <ListBox HorizontalAlignment="Left" Height="109" Margin="10,152,0,0" VerticalAlignment="Top" Width="471"/>
-                    <Label Content="Select:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="82" FontSize="18" RenderTransformOrigin="0.83,1.36" Margin="10,0,0,0"/>
-                    <Label Content="Possible Combinations" HorizontalAlignment="Left" Margin="10,113,0,0" VerticalAlignment="Top" FontSize="18"/>
+                    <ListBox Height="109" Margin="10,147,10,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                    <Label Content="Select:" VerticalAlignment="Top" Height="40" FontSize="18" RenderTransformOrigin="0.83,1.36" Margin="10,0,0,0" HorizontalAlignment="Left" Width="65"/>
+                    <Label Content="Possible Combinations" Margin="10,113,0,0" VerticalAlignment="Top" FontSize="18" HorizontalAlignment="Left" Width="192"/>
+                    <ListBox x:Name="SelectionBox" Margin="10,35,10,158" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <WrapPanel Height="68" Width="456" ItemHeight="30" ItemWidth="50"/>
+                    </ListBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Change/Add">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="141" Height="34" BorderBrush="White" Background="#FFFFF5F5" Foreground="White" OpacityMask="Black"/>
+                </Grid>
             </TabItem>
         </TabControl>
 
