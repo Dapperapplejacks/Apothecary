@@ -24,5 +24,10 @@ namespace Apothecar
         {
             InitializeComponent();
         }
+
+        public void ExistingSelect(object sender, SelectionChangedEventArgs args)
+        {
+
+        }
     }
 }
