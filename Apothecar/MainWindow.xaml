@@ -35,18 +35,18 @@
                     </Grid.ColumnDefinitions>
                     <ComboBox x:Name="ExisitingComboBox" SelectionChanged="ExistingSelect" Margin="10,10,0,14" BorderBrush="White" Background="#FFFFF5F5" Foreground="White" OpacityMask="Black" Text="Select Exisiting" HorizontalAlignment="Left" Width="124"/>
                     <TextBox x:Name="NewEntryTextBox" Grid.Column="1" Height="34" Margin="10,10,135,0" TextWrapping="Wrap" Text="New Entry" VerticalAlignment="Top" Background="#A5FFFFFF" VerticalContentAlignment="Center" FontSize="16"/>
-                    <Button x:Name="AddNewEntryButton" Content="Add" Grid.Column="1" Margin="0,10,10,0" VerticalAlignment="Top" Height="34" HorizontalAlignment="Right" Width="109" FontSize="16"/>
+                    <Button x:Name="AddNewEntryButton" Content="Add" Grid.Column="1" Margin="0,10,10,0" VerticalAlignment="Top" Height="34" HorizontalAlignment="Right" Width="109" FontSize="16" Click="AddNewEntryClick" Background="#FF65D174"/>
                     <GroupBox x:Name="ComboManagerGroupBox" Header="{Binding Header, ElementName=ExisitingComboBox}" Margin="10,0" Grid.Row="1" VerticalAlignment="Top" Height="203" Grid.ColumnSpan="2" BorderThickness="2" FontSize="16">
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="220*"/>
-                                <ColumnDefinition Width="219*"/>
+                                <ColumnDefinition Width="231*"/>
+                                <ColumnDefinition Width="208*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="46*"/>
                                 <RowDefinition Height="109*"/>
                             </Grid.RowDefinitions>
-                            <Button x:Name="AddNewComboButton" Content="Add" HorizontalAlignment="Left" Margin="145,10,0,0" VerticalAlignment="Top" Width="75" Height="27" Background="#FF65D174"/>
+                            <Button x:Name="AddNewComboButton" Content="Add" Margin="145,10,0,0" VerticalAlignment="Top" Height="27" Background="#FF65D174" HorizontalAlignment="Left" Width="75"/>
                             <Button x:Name="DeleteComboButton" Content="Delete" Grid.Column="1" Margin="70,10,10,0" VerticalAlignment="Top" Height="27" Background="#FFFD6868" IsEnabled="False"/>
                             <ListBox x:Name="CombinationsListBox" HorizontalAlignment="Left" Height="89" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="419" Grid.ColumnSpan="2" Background="#7FFFFFFF">
                                 <WrapPanel Height="79" Width="405" ScrollViewer.VerticalScrollBarVisibility="Auto"/>

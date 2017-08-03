@@ -20,12 +20,19 @@ namespace Apothecar
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private ExcelHandler excelHandler;
         public MainWindow()
         {
             InitializeComponent();
         }
 
         public void ExistingSelect(object sender, SelectionChangedEventArgs args)
+        {
+
+        }
+
+        private void AddNewEntryClick(object sender, RoutedEventArgs e)
         {
 
         }
