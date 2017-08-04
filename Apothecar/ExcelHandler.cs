@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Office.Interop.Excel;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 namespace Apothecary
 {
@@ -14,60 +15,89 @@ namespace Apothecary
     /// </summary>
     class ExcelHandler
     {
-        private Microsoft.Office.Interop.Excel.Application xlApp;
-        private Workbooks workbooks;
+        private static Microsoft.Office.Interop.Excel.Application xlApp;
+        private static Workbooks workbooks;
+        private static Workbook relationWorkbook;
+        private static Workbook descriptorWorkbook;
+
+        public static Workbook RelationWorkbook
+        {
+            get
+            {
+                return relationWorkbook;
+            }
+            private set
+            {
+                relationWorkbook = value;
+            }
+        }
+
+        public static Workbook DescriptorWorkbook
+        {
+            get
+            {
+                return descriptorWorkbook;
+            }
+            private set
+            {
+                descriptorWorkbook = value;
+            }
+        }
         
+        private static const string relationsFileName = "relations.xlsx";
+        private static const string descriptorsFileName = "descriptors.xlsx";
 
         public ExcelHandler()
         {
             xlApp = new Microsoft.Office.Interop.Excel.Application();
-            workbooks = xlApp.Workbooks;
 
             if (xlApp == null)
             {
-                
+                MessageBox.Show("Invalid or missing Microsoft Excel program.\n\nExiting Apothecary.", "Error");
                 throw new Exception();
             }
+
+            workbooks = xlApp.Workbooks;
+            relationWorkbook = GetRelations();
+            descriptorWorkbook = GetDescriptors();
         }
 
-        /// <summary>
-        /// Reads manifest excel file
-        /// </summary>
-        /// <param name="path">Path of manifest</param>
-        /// <returns>Manifest object</returns>
-        private Manifest ReadManifest(string path)
+        private static Workbook GetRelations()
         {
+            //Try to open Relations workbook
             try
             {
-                Workbook workbook = workbooks.Open(path, Type.Missing, true);
-                manifest = new Manifest(workbook);
+                Workbook workbook = workbooks.Open(relationsFileName, Type.Missing, true);
 
-                Marshal.ReleaseComObject(workbook);
-                workbook = null;
-
-                return manifest;
+                Console.WriteLine("Found Relations workbook");
+                return workbook;
             }
+            //Else add a new one    
             catch (Exception ex)
             {
-                throw new Exception("Error locating/reading UPC manifest");
+                Console.WriteLine("Adding new Relations workbook");
+
+                return workbooks.Add();
             }
         }
 
-        /// <summary>
-        /// Creates metadata excel file and saves it in destination folder
-        /// </summary>
-        /// <param name="album">Album to make metadata file for</param>
-        /// <param name="startEndDates">Array of start and end dates taken from GUI</param>
-        public void CreateMetaData(Album album, string[] startEndDates)
+        private static Workbook GetDescriptors()
         {
-            Metadata metadata = new Metadata(workbooks.Add());
-            metadata.PopulateSheet(album, ReadManifest(manifestPath), startEndDates);
-            metadata.SaveFile(album.Path);
+            //Try to open Descriptor workbook
+            try
+            {
+                Workbook workbook = workbooks.Open(descriptorsFileName, Type.Missing, true);
 
-            CleanUp();
+                Console.WriteLine("Found Descriptor workbook");
+                return workbook;
+            }
+            //Else add a new one    
+            catch (Exception ex)
+            {
+                Console.WriteLine("Adding new Descriptor workbook");
 
-            xlApp = new Microsoft.Office.Interop.Excel.Application();
-            workbooks = xlApp.Workbooks;
+                return workbooks.Add();
+            }
         }
 
         /// <summary>
@@ -77,11 +107,14 @@ namespace Apothecary
         {
             xlApp.Quit();
 
-            if (manifest != null)
-            {
-                manifest.CleanUp();
-                manifest = null;
-            }
+            Marshal.ReleaseComObject(relationWorkbook.Worksheets[0]);
+            Marshal.ReleaseComObject(descriptorWorkbook.Worksheets[0]);
+
+            Marshal.ReleaseComObject(relationWorkbook);
+            relationWorkbook = null;
+            Marshal.ReleaseComObject(descriptorWorkbook);
+            descriptorWorkbook = null;
+            
             Marshal.ReleaseComObject(workbooks);
             workbooks = null;
             Marshal.ReleaseComObject(xlApp);
