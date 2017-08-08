@@ -15,9 +15,7 @@
         <TabControl x:Name="TabControl" Height="299" Margin="10,10,10,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <TabItem x:Name="ListTabItem" Header="List">
                 <Grid Background="#FFE5E5E5">
-                    <GroupBox x:Name="SelectGroupBox" Header="Select" Margin="10,10,10,0" VerticalAlignment="Top" Height="92" FontSize="16" BorderThickness="2" Background="#7FFFFFFF">
-                        <WrapPanel Margin="10,10,12,10"/>
-                    </GroupBox>
+                    <GroupBox x:Name="SelectGroupBox" Header="Select" Margin="10,10,10,0" VerticalAlignment="Top" Height="92" FontSize="16" BorderThickness="2" Background="#7FFFFFFF"/>
                     <GroupBox x:Name="CombinationsGroupBox" Header="Combinations" Margin="10,107,10,0" VerticalAlignment="Top" Height="154" FontSize="16" Background="#7FFFFFFF" BorderThickness="2">
                         <WrapPanel Margin="10"/>
                     </GroupBox>

@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="EssentialOils" EntityType="Model1.Store.EssentialOils" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Descriptors" EntityType="Model1.Store.Descriptors" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Comboes" EntityType="Model1.Store.Comboes" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="EssentialOilCombo" Association="Model1.Store.EssentialOilCombo">
+      <End Role="EssentialOil" EntitySet="EssentialOils" />
+      <End Role="Combo" EntitySet="Comboes" />
+    </AssociationSet>
+    <AssociationSet Name="EssentialOilCombo1" Association="Model1.Store.EssentialOilCombo1">
+      <End Role="EssentialOil" EntitySet="EssentialOils" />
+      <End Role="Combo" EntitySet="Comboes" />
+    </AssociationSet>
+    <AssociationSet Name="EssentialOilDescriptor" Association="Model1.Store.EssentialOilDescriptor">
+      <End Role="EssentialOil" EntitySet="EssentialOils" />
+      <End Role="Descriptor" EntitySet="Descriptors" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="EssentialOils">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Descriptors">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="EssentialOils_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Comboes">
+    <Key>
+      <PropertyRef Name="EssentialOilID1" />
+      <PropertyRef Name="EssentialOilID2" />
+    </Key>
+    <Property Name="EssentialOilID1" Type="int" Nullable="false" />
+    <Property Name="EssentialOilID2" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="EssentialOilCombo">
+    <End Role="EssentialOil" Type="Model1.Store.EssentialOils" Multiplicity="1" />
+    <End Role="Combo" Type="Model1.Store.Comboes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EssentialOil">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Combo">
+        <PropertyRef Name="EssentialOilID1" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EssentialOilCombo1">
+    <End Role="EssentialOil" Type="Model1.Store.EssentialOils" Multiplicity="1" />
+    <End Role="Combo" Type="Model1.Store.Comboes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EssentialOil">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Combo">
+        <PropertyRef Name="EssentialOilID2" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EssentialOilDescriptor">
+    <End Role="EssentialOil" Type="Model1.Store.EssentialOils" Multiplicity="1" />
+    <End Role="Descriptor" Type="Model1.Store.Descriptors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EssentialOil">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Descriptor">
+        <PropertyRef Name="EssentialOils_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="EssentialOils" EntityType="Model1.EssentialOil" />
+          <EntitySet Name="Descriptors" EntityType="Model1.Descriptor" />
+          <EntitySet Name="Comboes" EntityType="Model1.Combo" />
+          <AssociationSet Name="EssentialOilCombo" Association="Model1.EssentialOilCombo">
+            <End Role="EssentialOil" EntitySet="EssentialOils" />
+            <End Role="Combo" EntitySet="Comboes" />
+          </AssociationSet>
+          <AssociationSet Name="EssentialOilCombo1" Association="Model1.EssentialOilCombo1">
+            <End Role="EssentialOil" EntitySet="EssentialOils" />
+            <End Role="Combo" EntitySet="Comboes" />
+          </AssociationSet>
+          <AssociationSet Name="EssentialOilDescriptor" Association="Model1.EssentialOilDescriptor">
+            <End Role="EssentialOil" EntitySet="EssentialOils" />
+            <End Role="Descriptor" EntitySet="Descriptors" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="EssentialOil">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Comboes" Relationship="Model1.EssentialOilCombo" FromRole="EssentialOil" ToRole="Combo" />
+          <NavigationProperty Name="Descriptors" Relationship="Model1.EssentialOilDescriptor" FromRole="EssentialOil" ToRole="Descriptor" />
+          <Property Name="Name" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Descriptor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="EssentialOils" Relationship="Model1.EssentialOilDescriptor" FromRole="Descriptor" ToRole="EssentialOil" />
+          <Property Name="Content" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Combo">
+          <Key>
+            <PropertyRef Name="EssentialOilID1" />
+            <PropertyRef Name="EssentialOilID2" />
+          </Key>
+          <NavigationProperty Name="EssentialOil" Relationship="Model1.EssentialOilCombo" FromRole="Combo" ToRole="EssentialOil" />
+          <Property Name="EssentialOilID1" Type="Int32" Nullable="false" />
+          <Property Name="EssentialOilID2" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="EssentialOilCombo">
+          <End Type="Model1.EssentialOil" Role="EssentialOil" Multiplicity="1" />
+          <End Type="Model1.Combo" Role="Combo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EssentialOil">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Combo">
+              <PropertyRef Name="EssentialOilID1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EssentialOilCombo1">
+          <End Type="Model1.EssentialOil" Role="EssentialOil" Multiplicity="1" />
+          <End Type="Model1.Combo" Role="Combo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EssentialOil">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Combo">
+              <PropertyRef Name="EssentialOilID2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EssentialOilDescriptor">
+          <End Type="Model1.EssentialOil" Role="EssentialOil" Multiplicity="1" />
+          <End Type="Model1.Descriptor" Role="Descriptor" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="EssentialOils">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.EssentialOil)">
+        <MappingFragment StoreEntitySet="EssentialOils">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Descriptors">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Descriptor)">
+        <MappingFragment StoreEntitySet="Descriptors">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Comboes">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Combo)">
+        <MappingFragment StoreEntitySet="Comboes">
+          <ScalarProperty Name="EssentialOilID1" ColumnName="EssentialOilID1" />
+          <ScalarProperty Name="EssentialOilID2" ColumnName="EssentialOilID2" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="EssentialOilDescriptor" TypeName="Model1.EssentialOilDescriptor" StoreEntitySet="Descriptors">
+      <EndProperty Name="EssentialOil">
+        <ScalarProperty Name="Id" ColumnName="EssentialOils_Id" />
+      </EndProperty>
+      <EndProperty Name="Descriptor">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

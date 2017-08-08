@@ -21,7 +21,7 @@ namespace Apothecar
     public partial class MainWindow : Window
     {
 
-        private ExcelHandler excelHandler;
+        //private ExcelHandler excelHandler;
         public MainWindow()
         {
             InitializeComponent();
