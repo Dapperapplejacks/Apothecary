@@ -35,7 +35,7 @@ namespace Apothecary
             Dictionary<string, List<EssentialOil>> ret = new Dictionary<string,List<EssentialOil>>();
 
             //Read excel workbook
-            Workbook wb = ExcelHandler.RelationWorkbook;
+            Workbook wb = null;//= ExcelHandler.RelationWorkbook;
             Worksheet ws = wb.Worksheets[0];
             
             //Retrieve all relations
@@ -47,7 +47,7 @@ namespace Apothecary
                 List<EssentialOil> list = new List<EssentialOil>();
                 for (int j = 1; j < column.Count; j++)
                 {
-                    list.Add(new EssentialOil(column[i]));
+                    //list.Add(new EssentialOil(column[i]));
                 }
 
                 ret[key] = list;

@@ -1,60 +1,52 @@
-﻿<Window x:Class="Apothecar.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Apothecary
-        " Height="343" Width="390" MinWidth="525" MinHeight="350">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="93*"/>
-            <RowDefinition Height="226*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="7*"/>
-        </Grid.ColumnDefinitions>
-        <TabControl x:Name="TabControl" Height="299" Margin="10,10,10,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.RowSpan="2">
-            <TabItem x:Name="ListTabItem" Header="List">
-                <Grid Background="#FFE5E5E5">
-                    <GroupBox x:Name="SelectGroupBox" Header="Select" Margin="10,10,10,0" VerticalAlignment="Top" Height="92" FontSize="16" BorderThickness="2" Background="#7FFFFFFF"/>
-                    <GroupBox x:Name="CombinationsGroupBox" Header="Combinations" Margin="10,107,10,0" VerticalAlignment="Top" Height="154" FontSize="16" Background="#7FFFFFFF" BorderThickness="2">
-                        <WrapPanel Margin="10"/>
-                    </GroupBox>
-                </Grid>
-            </TabItem>
-            <TabItem x:Name="ChangeAddTabItem" Header="Change/Add">
-                <Grid Background="#FFE5E5E5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="58*"/>
-                        <RowDefinition Height="213*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="184*"/>
-                        <ColumnDefinition Width="307*"/>
-                    </Grid.ColumnDefinitions>
-                    <ComboBox x:Name="ExisitingComboBox" SelectionChanged="ExistingSelect" Margin="10,10,0,14" BorderBrush="White" Background="#FFFFF5F5" Foreground="White" OpacityMask="Black" Text="Select Exisiting" HorizontalAlignment="Left" Width="124"/>
-                    <TextBox x:Name="NewEntryTextBox" Grid.Column="1" Height="34" Margin="10,10,135,0" TextWrapping="Wrap" Text="New Entry" VerticalAlignment="Top" Background="#A5FFFFFF" VerticalContentAlignment="Center" FontSize="16"/>
-                    <Button x:Name="AddNewEntryButton" Content="Add" Grid.Column="1" Margin="0,10,10,0" VerticalAlignment="Top" Height="34" HorizontalAlignment="Right" Width="109" FontSize="16" Click="AddNewEntryClick" Background="#FF65D174"/>
-                    <GroupBox x:Name="ComboManagerGroupBox" Header="{Binding Header, ElementName=ExisitingComboBox}" Margin="10,0" Grid.Row="1" VerticalAlignment="Top" Height="203" Grid.ColumnSpan="2" BorderThickness="2" FontSize="16">
-                        <Grid Margin="10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="231*"/>
-                                <ColumnDefinition Width="208*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="46*"/>
-                                <RowDefinition Height="109*"/>
-                            </Grid.RowDefinitions>
-                            <Button x:Name="AddNewComboButton" Content="Add" Margin="145,10,0,0" VerticalAlignment="Top" Height="27" Background="#FF65D174" HorizontalAlignment="Left" Width="75"/>
-                            <Button x:Name="DeleteComboButton" Content="Delete" Grid.Column="1" Margin="70,10,10,0" VerticalAlignment="Top" Height="27" Background="#FFFD6868" IsEnabled="False"/>
-                            <ListBox x:Name="CombinationsListBox" HorizontalAlignment="Left" Height="89" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="419" Grid.ColumnSpan="2" Background="#7FFFFFFF">
-                                <WrapPanel Height="79" Width="405" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-                            </ListBox>
-                            <ComboBox HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top" Width="120" Height="28"/>
-                        </Grid>
-                    </GroupBox>
-                </Grid>
-            </TabItem>
-        </TabControl>
-
-    </Grid>
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Apothecary="clr-namespace:Apothecary" mc:Ignorable="d" x:Class="Apothecary.MainWindow"
+        Title="Apothecary         " Height="420" Width="604" MinWidth="604" MinHeight="420" Loaded="Window_Loaded">
+    <Window.Resources>
+        <CollectionViewSource x:Key="essentialOilViewSource" d:DesignSource="{d:DesignInstance {x:Type Apothecary:EssentialOil}, CreateList=True}"/>
+        <CollectionViewSource x:Key="essentialOilComboesViewSource" Source="{Binding Comboes, Source={StaticResource essentialOilViewSource}}"/>
+        <CollectionViewSource x:Key="essentialOilDescriptorsViewSource" Source="{Binding Descriptors, Source={StaticResource essentialOilViewSource}}"/>
+        <CollectionViewSource x:Key="descriptorViewSource" d:DesignSource="{d:DesignInstance {x:Type Apothecary:Descriptor}, CreateList=True}"/>
+    </Window.Resources>
+    <TabControl Margin="0,0,2,-1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+        <TabItem x:Name="ListTab" Header="List">
+            <Grid Background="#FFE5E5E5" DataContext="{StaticResource essentialOilViewSource}">
+                <GroupBox Header="Essential Oils" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="115" Width="568" FontSize="16" Background="White">
+                    <DataGrid x:Name="essentialOilDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="0,0,-2,-3" RowDetailsVisibilityMode="VisibleWhenSelected" FontSize="12">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="nameColumn" Binding="{Binding Name}" Header="Name" Width="SizeToHeader"/>
+                            <DataGridTextColumn Binding="{Binding Descriptors/}" ClipboardContentBinding="{x:Null}" Header="Descriptor"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+                <GroupBox Header="Comboes" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Height="205" Width="568" FontSize="16" Background="White"/>
+            </Grid>
+        </TabItem>
+        <TabItem x:Name="AddEditOilTab" Header="Add/Edit Oils">
+            <Grid Background="#FFE5E5E5" DataContext="{StaticResource essentialOilViewSource}">
+                <TextBox x:Name="EnterNewOilTextBox" Height="58" Margin="45,20,296,0" TextWrapping="Wrap" Text="Enter New Oil Name" VerticalAlignment="Top" FontSize="20" VerticalContentAlignment="Center" TextChanged="EnterNewOilTextBox_TextChanged"/>
+                <TextBox x:Name="EnterDescriptorTextBox" Height="58" Margin="45,97,271,0" TextWrapping="Wrap" Text="Enter Descriptor" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="20"/>
+                <Button x:Name="AddDescriptorButton" Content="Add Descriptor" HorizontalAlignment="Right" Margin="0,113,126,0" VerticalAlignment="Top" Width="125" Height="32" Background="#FF78F78A" Click="AddDescriptorButton_Click"/>
+                <Button x:Name="DeleteDescriptorButton" Content="Delete" Margin="0,205,91,0" VerticalAlignment="Top" Height="40" Background="#FFF18C8C" IsEnabled="False" HorizontalAlignment="Right" Width="100"/>
+                <Button x:Name="AddOilButton" Content="Add Oil" Margin="117,301,0,0" Background="#FF78F78A" FontSize="20" VerticalContentAlignment="Center" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Width="155" Click="AddOilButton_Click"/>
+                <ComboBox x:Name="SelectExistingOilComboBox" DisplayMemberPath="Name" ItemsSource="{Binding Mode=OneWay}" Margin="0,30,36,0" SelectedValuePath="Name" Height="32" VerticalAlignment="Top" HorizontalAlignment="Right" Width="110" SelectionChanged="SelectExistingOilComboBox_SelectionChanged">
+                    <ComboBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel/>
+                        </ItemsPanelTemplate>
+                    </ComboBox.ItemsPanel>
+                </ComboBox>
+                <Label x:Name="ExistingOilLabel" Content="Or select existing Oil:" Margin="0,30,151,0" VerticalAlignment="Top" Height="32.146" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" UseLayoutRounding="False" Background="#FFF0F0F0" HorizontalAlignment="Right" Width="120"/>
+                <Button x:Name="DeleteOilButton" Content="Delete Oil" HorizontalAlignment="Left" Margin="327,301,0,0" VerticalAlignment="Top" Width="155" Height="39" Background="#FFFF6D6D" FontSize="20" Click="DeleteOilButton_Click"/>
+            </Grid>
+        </TabItem>
+        <TabItem x:Name="EditComboesTab" Header="Edit Comboes" Margin="-2,0">
+            <Grid Background="#FFE5E5E5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>
