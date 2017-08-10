@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 namespace Apothecary
 {
@@ -57,6 +58,9 @@ namespace Apothecary
             System.Windows.Data.CollectionViewSource descriptorViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("descriptorViewSource")));
             // Load data by setting the CollectionViewSource.Source property:
             // descriptorViewSource.Source = [generic data source]
+            System.Windows.Data.CollectionViewSource comboViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("comboViewSource")));
+            // Load data by setting the CollectionViewSource.Source property:
+            // comboViewSource.Source = [generic data source]
         }
 
         private void DeleteComboButton_Click(object sender, RoutedEventArgs e)
@@ -137,7 +141,18 @@ namespace Apothecary
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            throw new NotImplementedException();
+            string ret = "";
+            ObservableCollection<Descriptor> coll = (ObservableCollection<Descriptor>)value;
+            //value = (ObservableCollection<Descriptor>)value;
+            string[] strArray = new string[coll.Count];
+
+            for (int i = 0; i < strArray.Length; i++)
+            {
+                strArray[i] = coll[i].Content;
+            }
+
+            ret = String.Join(", ", strArray);
+            return ret;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

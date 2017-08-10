@@ -140,6 +140,7 @@
       <DependentUpon>Model.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\Combo.datasource" />
     <None Include="Properties\DataSources\Descriptor.datasource" />
     <None Include="Properties\DataSources\EssentialOil.datasource" />
     <None Include="Properties\Settings.settings">

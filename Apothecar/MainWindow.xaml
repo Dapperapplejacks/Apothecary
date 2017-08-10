@@ -8,19 +8,21 @@
         <CollectionViewSource x:Key="essentialOilComboesViewSource" Source="{Binding Comboes, Source={StaticResource essentialOilViewSource}}"/>
         <CollectionViewSource x:Key="essentialOilDescriptorsViewSource" Source="{Binding Descriptors, Source={StaticResource essentialOilViewSource}}"/>
         <CollectionViewSource x:Key="descriptorViewSource" d:DesignSource="{d:DesignInstance {x:Type Apothecary:Descriptor}, CreateList=True}"/>
+        <Apothecary:DescriptorConverter x:Key="DescriptorConverter"/>
+        <CollectionViewSource x:Key="comboViewSource" d:DesignSource="{d:DesignInstance {x:Type Apothecary:Combo}, CreateList=True}"/>
     </Window.Resources>
     <TabControl Margin="0,0,2,-1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
         <TabItem x:Name="ListTab" Header="List">
             <Grid Background="#FFE5E5E5" DataContext="{StaticResource essentialOilViewSource}">
                 <GroupBox Header="Essential Oils" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="115" Width="568" FontSize="16" Background="White">
-                    <DataGrid x:Name="essentialOilDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="0,0,-2,-3" RowDetailsVisibilityMode="VisibleWhenSelected" FontSize="12">
+                    <DataGrid x:Name="essentialOilDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="0,0,-2,-3" RowDetailsVisibilityMode="VisibleWhenSelected" FontSize="12" IsReadOnly="True">
                         <DataGrid.Columns>
-                            <DataGridTextColumn x:Name="nameColumn" Binding="{Binding Name}" Header="Name" Width="SizeToHeader"/>
-                            <DataGridTextColumn Binding="{Binding Descriptors/}" ClipboardContentBinding="{x:Null}" Header="Descriptor"/>
+                            <DataGridTextColumn x:Name="nameColumn" Binding="{Binding Name}" Header="Name" Width="2*"/>
+                            <DataGridTextColumn Binding="{Binding Descriptors, Converter={StaticResource DescriptorConverter}}" ClipboardContentBinding="{x:Null}" Header="Descriptor(s)" Width="8*"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </GroupBox>
-                <GroupBox Header="Comboes" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Height="205" Width="568" FontSize="16" Background="White"/>
+                <GroupBox Header="Possible Comboes" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Height="200" Width="568" Background="White" FontSize="16"/>
             </Grid>
         </TabItem>
         <TabItem x:Name="AddEditOilTab" Header="Add/Edit Oils">
@@ -30,13 +32,7 @@
                 <Button x:Name="AddDescriptorButton" Content="Add Descriptor" HorizontalAlignment="Right" Margin="0,113,126,0" VerticalAlignment="Top" Width="125" Height="32" Background="#FF78F78A" Click="AddDescriptorButton_Click"/>
                 <Button x:Name="DeleteDescriptorButton" Content="Delete" Margin="0,205,91,0" VerticalAlignment="Top" Height="40" Background="#FFF18C8C" IsEnabled="False" HorizontalAlignment="Right" Width="100"/>
                 <Button x:Name="AddOilButton" Content="Add Oil" Margin="117,301,0,0" Background="#FF78F78A" FontSize="20" VerticalContentAlignment="Center" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Width="155" Click="AddOilButton_Click"/>
-                <ComboBox x:Name="SelectExistingOilComboBox" DisplayMemberPath="Name" ItemsSource="{Binding Mode=OneWay}" Margin="0,30,36,0" SelectedValuePath="Name" Height="32" VerticalAlignment="Top" HorizontalAlignment="Right" Width="110" SelectionChanged="SelectExistingOilComboBox_SelectionChanged">
-                    <ComboBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel/>
-                        </ItemsPanelTemplate>
-                    </ComboBox.ItemsPanel>
-                </ComboBox>
+                <ComboBox x:Name="SelectExistingOilComboBox" DisplayMemberPath="Name" ItemsSource="{Binding Mode=OneWay}" Margin="0,30,36,0" SelectedValuePath="Name" Height="32" VerticalAlignment="Top" HorizontalAlignment="Right" Width="110" SelectionChanged="SelectExistingOilComboBox_SelectionChanged"/>
                 <Label x:Name="ExistingOilLabel" Content="Or select existing Oil:" Margin="0,30,151,0" VerticalAlignment="Top" Height="32.146" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" UseLayoutRounding="False" Background="#FFF0F0F0" HorizontalAlignment="Right" Width="120"/>
                 <Button x:Name="DeleteOilButton" Content="Delete Oil" HorizontalAlignment="Left" Margin="327,301,0,0" VerticalAlignment="Top" Width="155" Height="39" Background="#FFFF6D6D" FontSize="20" Click="DeleteOilButton_Click"/>
             </Grid>

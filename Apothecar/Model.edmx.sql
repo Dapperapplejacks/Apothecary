@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 08/09/2017 14:20:44
+-- Date Created: 08/10/2017 15:50:24
 -- Generated from EDMX file: C:\Users\BD Production\Documents\Visual Studio 2013\Projects\Apothecary\Apothecar\Model.edmx
 -- --------------------------------------------------
 
@@ -17,14 +17,14 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
+IF OBJECT_ID(N'[dbo].[FK_EssentialOilDescriptor]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Descriptors] DROP CONSTRAINT [FK_EssentialOilDescriptor];
+GO
 IF OBJECT_ID(N'[dbo].[FK_EssentialOilCombo]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Comboes] DROP CONSTRAINT [FK_EssentialOilCombo];
 GO
 IF OBJECT_ID(N'[dbo].[FK_EssentialOilCombo1]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Comboes] DROP CONSTRAINT [FK_EssentialOilCombo1];
-GO
-IF OBJECT_ID(N'[dbo].[FK_EssentialOilDescriptor]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Descriptors] DROP CONSTRAINT [FK_EssentialOilDescriptor];
 GO
 
 -- --------------------------------------------------
@@ -56,14 +56,14 @@ GO
 CREATE TABLE [dbo].[Descriptors] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Content] nvarchar(max)  NOT NULL,
-    [EssentialOils_Id] int  NOT NULL
+    [EssentialOilId] int  NOT NULL
 );
 GO
 
 -- Creating table 'Comboes'
 CREATE TABLE [dbo].[Comboes] (
-    [EssentialOilID1] int  NOT NULL,
-    [EssentialOilID2] int  NOT NULL
+    [EssentialOilId1] int  NOT NULL,
+    [EssentialOilId2] int  NOT NULL
 );
 GO
 
@@ -83,44 +83,20 @@ ADD CONSTRAINT [PK_Descriptors]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [EssentialOilID1], [EssentialOilID2] in table 'Comboes'
+-- Creating primary key on [EssentialOilId1], [EssentialOilId2] in table 'Comboes'
 ALTER TABLE [dbo].[Comboes]
 ADD CONSTRAINT [PK_Comboes]
-    PRIMARY KEY CLUSTERED ([EssentialOilID1], [EssentialOilID2] ASC);
+    PRIMARY KEY CLUSTERED ([EssentialOilId1], [EssentialOilId2] ASC);
 GO
 
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
--- Creating foreign key on [EssentialOilID1] in table 'Comboes'
-ALTER TABLE [dbo].[Comboes]
-ADD CONSTRAINT [FK_EssentialOilCombo]
-    FOREIGN KEY ([EssentialOilID1])
-    REFERENCES [dbo].[EssentialOils]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [EssentialOilID2] in table 'Comboes'
-ALTER TABLE [dbo].[Comboes]
-ADD CONSTRAINT [FK_EssentialOilCombo1]
-    FOREIGN KEY ([EssentialOilID2])
-    REFERENCES [dbo].[EssentialOils]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EssentialOilCombo1'
-CREATE INDEX [IX_FK_EssentialOilCombo1]
-ON [dbo].[Comboes]
-    ([EssentialOilID2]);
-GO
-
--- Creating foreign key on [EssentialOils_Id] in table 'Descriptors'
+-- Creating foreign key on [EssentialOilId] in table 'Descriptors'
 ALTER TABLE [dbo].[Descriptors]
 ADD CONSTRAINT [FK_EssentialOilDescriptor]
-    FOREIGN KEY ([EssentialOils_Id])
+    FOREIGN KEY ([EssentialOilId])
     REFERENCES [dbo].[EssentialOils]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -129,7 +105,31 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_EssentialOilDescriptor'
 CREATE INDEX [IX_FK_EssentialOilDescriptor]
 ON [dbo].[Descriptors]
-    ([EssentialOils_Id]);
+    ([EssentialOilId]);
+GO
+
+-- Creating foreign key on [EssentialOilId1] in table 'Comboes'
+ALTER TABLE [dbo].[Comboes]
+ADD CONSTRAINT [FK_EssentialOilCombo]
+    FOREIGN KEY ([EssentialOilId1])
+    REFERENCES [dbo].[EssentialOils]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [EssentialOilId2] in table 'Comboes'
+ALTER TABLE [dbo].[Comboes]
+ADD CONSTRAINT [FK_EssentialOilCombo1]
+    FOREIGN KEY ([EssentialOilId2])
+    REFERENCES [dbo].[EssentialOils]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_EssentialOilCombo1'
+CREATE INDEX [IX_FK_EssentialOilCombo1]
+ON [dbo].[Comboes]
+    ([EssentialOilId2]);
 GO
 
 -- --------------------------------------------------
