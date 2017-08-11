@@ -17,5 +17,7 @@ namespace Apothecary
         public int Id { get; set; }
         public string Content { get; set; }
         public int EssentialOilId { get; set; }
+    
+        public virtual EssentialOil EssentialOil { get; set; }
     }
 }

@@ -1,1 +1,1 @@
-Insert into Descriptors (Content, EssentialOilId) values ('A little narky', 2);
+Select * from Descriptors;

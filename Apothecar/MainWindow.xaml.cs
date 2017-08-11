@@ -61,6 +61,8 @@ namespace Apothecary
             System.Windows.Data.CollectionViewSource comboViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("comboViewSource")));
             // Load data by setting the CollectionViewSource.Source property:
             // comboViewSource.Source = [generic data source]
+
+            UpdateOilComboBox();
         }
 
         private void DeleteComboButton_Click(object sender, RoutedEventArgs e)
@@ -93,8 +95,8 @@ namespace Apothecary
         private void AddDescriptorButton_Click(object sender, RoutedEventArgs e)
         {
             Descriptor desc = new Descriptor();
-            desc.Content = this.EnterDescriptorTextBox.Text;
-            this.EnterDescriptorTextBox.Text = "Enter Descriptor";
+            //desc.Content = this.EnterDescriptorTextBox.Text;
+            //this.EnterDescriptorTextBox.Text = "Enter Descriptor";
             //this.DescriptorsListView.Items.Add(desc);
             //this.DescriptorsListView.Items.Refresh();
         }
@@ -132,6 +134,55 @@ namespace Apothecary
             this.context.Dispose();
         }
 
+        private void SaveNewOilsDescriptors_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var descriptor in context.Descriptors.Local.ToList())
+            {
+                if (descriptor.EssentialOil == null)
+                {
+                    context.Descriptors.Remove(descriptor);
+                }
+            }
+
+            context.SaveChanges();
+            this.essentialOilDataGrid1.Items.Refresh();
+            this.descriptorsDataGrid.Items.Refresh();
+
+            UpdateOilComboBox();
+            
+        }
+
+        private void UpdateOilComboBox()
+        {
+            this.essentialOilComboBox.Items.Clear();
+            foreach (var item in this.essentialOilDataGrid1.Items)
+            {
+                this.essentialOilComboBox.Items.Add(item);
+            }
+        }
+
+        private void AddCompatibleOil_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedOil1 = this.essentialOilDataGrid2.SelectedValue as string;
+            string selectedOil2 = this.essentialOilComboBox.SelectedValue as string;
+
+            this.comboDataGrid.Items.Add(new { selectedOil1, selectedOil2 });
+            this.comboDataGrid.Items.Refresh();
+        }
+
+        private void comboesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this.DeleteCompatibleOilButton.IsEnabled = true;
+        }
+
+        private void DeleteCompatibleOilButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedOil1 = this.essentialOilDataGrid2.SelectedItem;
+            var selectedOil2 = this.essentialOilComboBox.SelectedItem;
+
+            this.comboDataGrid.Items.Remove(new { selectedOil1, selectedOil2 });
+        }
+
        
 
     }
@@ -153,6 +204,20 @@ namespace Apothecary
 
             ret = String.Join(", ", strArray);
             return ret;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class EssentialOilConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return ((EssentialOil)value).Name;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

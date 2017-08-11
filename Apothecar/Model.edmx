@@ -9,10 +9,6 @@
     <EntitySet Name="EssentialOils" EntityType="Model1.Store.EssentialOils" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Descriptors" EntityType="Model1.Store.Descriptors" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Comboes" EntityType="Model1.Store.Comboes" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="EssentialOilDescriptor" Association="Model1.Store.EssentialOilDescriptor">
-      <End Role="EssentialOil" EntitySet="EssentialOils" />
-      <End Role="Descriptor" EntitySet="Descriptors" />
-    </AssociationSet>
     <AssociationSet Name="EssentialOilCombo" Association="Model1.Store.EssentialOilCombo">
       <End Role="EssentialOil" EntitySet="EssentialOils" />
       <End Role="Combo" EntitySet="Comboes" />
@@ -20,6 +16,10 @@
     <AssociationSet Name="EssentialOilCombo1" Association="Model1.Store.EssentialOilCombo1">
       <End Role="EssentialOil" EntitySet="EssentialOils" />
       <End Role="Combo" EntitySet="Comboes" />
+    </AssociationSet>
+    <AssociationSet Name="EssentialOilDescriptor" Association="Model1.Store.EssentialOilDescriptor">
+      <End Role="EssentialOil" EntitySet="EssentialOils" />
+      <End Role="Descriptor" EntitySet="Descriptors" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="EssentialOils">
@@ -45,18 +45,6 @@
     <Property Name="EssentialOilId1" Type="int" Nullable="false" />
     <Property Name="EssentialOilId2" Type="int" Nullable="false" />
   </EntityType>
-  <Association Name="EssentialOilDescriptor">
-    <End Role="EssentialOil" Type="Model1.Store.EssentialOils" Multiplicity="1" />
-    <End Role="Descriptor" Type="Model1.Store.Descriptors" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="EssentialOil">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Descriptor">
-        <PropertyRef Name="EssentialOilId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="EssentialOilCombo">
     <End Role="EssentialOil" Type="Model1.Store.EssentialOils" Multiplicity="1" />
     <End Role="Combo" Type="Model1.Store.Comboes" Multiplicity="*" />
@@ -81,6 +69,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="EssentialOilDescriptor">
+    <End Role="EssentialOil" Type="Model1.Store.EssentialOils" Multiplicity="1" />
+    <End Role="Descriptor" Type="Model1.Store.Descriptors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EssentialOil">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Descriptor">
+        <PropertyRef Name="EssentialOilId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -89,10 +89,6 @@
           <EntitySet Name="EssentialOils" EntityType="Model1.EssentialOil" />
           <EntitySet Name="Descriptors" EntityType="Model1.Descriptor" />
           <EntitySet Name="Comboes" EntityType="Model1.Combo" />
-          <AssociationSet Name="EssentialOilDescriptor" Association="Model1.EssentialOilDescriptor">
-            <End Role="EssentialOil" EntitySet="EssentialOils" />
-            <End Role="Descriptor" EntitySet="Descriptors" />
-          </AssociationSet>
           <AssociationSet Name="EssentialOilCombo" Association="Model1.EssentialOilCombo">
             <End Role="EssentialOil" EntitySet="EssentialOils" />
             <End Role="Combo" EntitySet="Comboes" />
@@ -101,6 +97,10 @@
             <End Role="EssentialOil" EntitySet="EssentialOils" />
             <End Role="Combo" EntitySet="Comboes" />
           </AssociationSet>
+          <AssociationSet Name="EssentialOilDescriptor" Association="Model1.EssentialOilDescriptor">
+            <End Role="EssentialOil" EntitySet="EssentialOils" />
+            <End Role="Descriptor" EntitySet="Descriptors" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="EssentialOil">
           <Key>
@@ -108,8 +108,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Descriptors" Relationship="Model1.EssentialOilDescriptor" FromRole="EssentialOil" ToRole="Descriptor" />
           <NavigationProperty Name="Comboes" Relationship="Model1.EssentialOilCombo" FromRole="EssentialOil" ToRole="Combo" />
+          <NavigationProperty Name="Descriptors" Relationship="Model1.EssentialOilDescriptor" FromRole="EssentialOil" ToRole="Descriptor" />
         </EntityType>
         <EntityType Name="Descriptor">
           <Key>
@@ -117,6 +117,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="EssentialOil" Relationship="Model1.EssentialOilDescriptor" FromRole="Descriptor" ToRole="EssentialOil" />
           <Property Name="EssentialOilId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Combo">
@@ -129,18 +130,6 @@
           <NavigationProperty Name="EssentialOil2" Relationship="Model1.EssentialOilCombo1" FromRole="Combo" ToRole="EssentialOil" />
           <Property Name="EssentialOilId2" Type="Int32" Nullable="false" />
         </EntityType>
-        <Association Name="EssentialOilDescriptor">
-          <End Type="Model1.EssentialOil" Role="EssentialOil" Multiplicity="1" />
-          <End Type="Model1.Descriptor" Role="Descriptor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EssentialOil">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Descriptor">
-              <PropertyRef Name="EssentialOilId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="EssentialOilCombo">
           <End Type="Model1.EssentialOil" Role="EssentialOil" Multiplicity="1" />
           <End Type="Model1.Combo" Role="Combo" Multiplicity="*" />
@@ -162,6 +151,18 @@
             </Principal>
             <Dependent Role="Combo">
               <PropertyRef Name="EssentialOilId2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EssentialOilDescriptor">
+          <End Type="Model1.EssentialOil" Role="EssentialOil" Multiplicity="1" />
+          <End Type="Model1.Descriptor" Role="Descriptor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EssentialOil">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Descriptor">
+              <PropertyRef Name="EssentialOilId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

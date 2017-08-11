@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 08/10/2017 15:50:24
+-- Date Created: 08/11/2017 11:18:48
 -- Generated from EDMX file: C:\Users\BD Production\Documents\Visual Studio 2013\Projects\Apothecary\Apothecar\Model.edmx
 -- --------------------------------------------------
 
@@ -17,14 +17,14 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_EssentialOilDescriptor]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Descriptors] DROP CONSTRAINT [FK_EssentialOilDescriptor];
-GO
 IF OBJECT_ID(N'[dbo].[FK_EssentialOilCombo]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Comboes] DROP CONSTRAINT [FK_EssentialOilCombo];
 GO
 IF OBJECT_ID(N'[dbo].[FK_EssentialOilCombo1]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Comboes] DROP CONSTRAINT [FK_EssentialOilCombo1];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DescriptorEssentialOil]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Descriptors] DROP CONSTRAINT [FK_DescriptorEssentialOil];
 GO
 
 -- --------------------------------------------------
@@ -93,21 +93,6 @@ GO
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
--- Creating foreign key on [EssentialOilId] in table 'Descriptors'
-ALTER TABLE [dbo].[Descriptors]
-ADD CONSTRAINT [FK_EssentialOilDescriptor]
-    FOREIGN KEY ([EssentialOilId])
-    REFERENCES [dbo].[EssentialOils]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EssentialOilDescriptor'
-CREATE INDEX [IX_FK_EssentialOilDescriptor]
-ON [dbo].[Descriptors]
-    ([EssentialOilId]);
-GO
-
 -- Creating foreign key on [EssentialOilId1] in table 'Comboes'
 ALTER TABLE [dbo].[Comboes]
 ADD CONSTRAINT [FK_EssentialOilCombo]
@@ -130,6 +115,21 @@ GO
 CREATE INDEX [IX_FK_EssentialOilCombo1]
 ON [dbo].[Comboes]
     ([EssentialOilId2]);
+GO
+
+-- Creating foreign key on [EssentialOilId] in table 'Descriptors'
+ALTER TABLE [dbo].[Descriptors]
+ADD CONSTRAINT [FK_EssentialOilDescriptor]
+    FOREIGN KEY ([EssentialOilId])
+    REFERENCES [dbo].[EssentialOils]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_EssentialOilDescriptor'
+CREATE INDEX [IX_FK_EssentialOilDescriptor]
+ON [dbo].[Descriptors]
+    ([EssentialOilId]);
 GO
 
 -- --------------------------------------------------

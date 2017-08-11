@@ -8,9 +8,9 @@
         <EntityTypeShape EntityType="Model1.EssentialOil" Width="1.5" PointX="2" PointY="1.5" />
         <EntityTypeShape EntityType="Model1.Descriptor" Width="1.5" PointX="5.75" PointY="1.375" />
         <EntityTypeShape EntityType="Model1.Combo" Width="1.5" PointX="5.625" PointY="3.625" IsExpanded="true" />
-        <AssociationConnector Association="Model1.EssentialOilDescriptor" />
         <AssociationConnector Association="Model1.EssentialOilCombo" />
         <AssociationConnector Association="Model1.EssentialOilCombo1" />
+        <AssociationConnector Association="Model1.EssentialOilDescriptor" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
