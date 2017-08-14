@@ -1,1 +1,1 @@
-Select * from Descriptors;
+Select * from Comboes;

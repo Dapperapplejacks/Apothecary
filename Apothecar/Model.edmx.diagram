@@ -8,8 +8,16 @@
         <EntityTypeShape EntityType="Model1.EssentialOil" Width="1.5" PointX="2" PointY="1.5" />
         <EntityTypeShape EntityType="Model1.Descriptor" Width="1.5" PointX="5.75" PointY="1.375" />
         <EntityTypeShape EntityType="Model1.Combo" Width="1.5" PointX="5.625" PointY="3.625" IsExpanded="true" />
-        <AssociationConnector Association="Model1.EssentialOilCombo" />
-        <AssociationConnector Association="Model1.EssentialOilCombo1" />
+        <AssociationConnector Association="Model1.EssentialOilCombo" ManuallyRouted="true" >
+          <ConnectorPoint PointX="3.5" PointY="3.2489225260416665" />
+          <ConnectorPoint PointX="5.6640625" PointY="3.2489225260416665" />
+          <ConnectorPoint PointX="5.6640625" PointY="3.625" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model1.EssentialOilCombo1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="3.5" PointY="3.2723600260416661" />
+          <ConnectorPoint PointX="5.640625" PointY="3.2723600260416661" />
+          <ConnectorPoint PointX="5.640625" PointY="3.625" />
+        </AssociationConnector>
         <AssociationConnector Association="Model1.EssentialOilDescriptor" />
       </Diagram>
     </edmx:Diagrams>
