@@ -1,1 +1,1 @@
-Select * from Descriptors where EssentialOilId=1;
+Select * from Comboes;
