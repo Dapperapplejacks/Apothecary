@@ -25,14 +25,7 @@ namespace Apothecary
 
         private Model1Container context = new Model1Container();
 
-        //List Tab
 
-        //Add/Edit tab
-        //Edit comboes tab
-        private EssentialOil firstSelectedOil;
-
-
-        //private ExcelHandler excelHandler;
         public MainWindow()
         {
             InitializeComponent();
@@ -40,27 +33,37 @@ namespace Apothecary
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadContext();
+        }
 
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            this.context.Dispose();
+        }
+
+        private void LoadContext()
+        {
             System.Windows.Data.CollectionViewSource essentialOilViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("essentialOilViewSource")));
             // Load data by setting the CollectionViewSource.Source property:
             // essentialOilViewSource.Source = [generic data source]
+            context = new Model1Container();
 
             context.EssentialOils.Load();
             essentialOilViewSource.Source = context.EssentialOils.Local;
-            System.Windows.Data.CollectionViewSource descriptorViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("descriptorViewSource")));
-            // Load data by setting the CollectionViewSource.Source property:
-            // descriptorViewSource.Source = [generic data source]
-            System.Windows.Data.CollectionViewSource comboViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("comboViewSource")));
-            // Load data by setting the CollectionViewSource.Source property:
-            // comboViewSource.Source = [generic data source]
-
-            UpdateOilComboBox();
+            UpdateOilGrids();
         }
 
+        private void UpdateOilComboBox()
+        {
+            this.essentialOilComboBox.Items.Clear();
+            foreach (var item in this.essentialOilDataGrid1.Items)
+            {
+                this.essentialOilComboBox.Items.Add(item);
+            }
+        }
 
-        #region Add/Edit Oils Tab Methods
-
-        private void SaveNewOilsDescriptors_Click(object sender, RoutedEventArgs e)
+        private void UpdateOilGrids()
         {
             foreach (var descriptor in context.Descriptors.Local.ToList())
             {
@@ -76,42 +79,19 @@ namespace Apothecary
             this.descriptorsDataGrid.Items.Refresh();
 
             UpdateOilComboBox();
+        }
+
+
+        #region Add/Edit Oils Tab Methods
+
+        private void SaveNewOilsDescriptors_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateOilGrids();
 
         }
         #endregion
 
-
-        private void DeleteComboButton_Click(object sender, RoutedEventArgs e)
-        {
-            foreach (var oil in context.EssentialOils.Local.ToList())
-            {
-                if (oil == null)
-                {
-                    context.EssentialOils.Remove(oil);
-                }
-            }
-            context.SaveChanges();
-
-            //Refresh items in container
-
-        }
-
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            base.OnClosing(e);
-            this.context.Dispose();
-        }
-
-        
-
-        private void UpdateOilComboBox()
-        {
-            this.essentialOilComboBox.Items.Clear();
-            foreach (var item in this.essentialOilDataGrid1.Items)
-            {
-                this.essentialOilComboBox.Items.Add(item);
-            }
-        }
+        #region Edit Comboes        
 
         private void AddCompatibleOil_Click(object sender, RoutedEventArgs e)
         {
@@ -142,16 +122,26 @@ namespace Apothecary
                 combo2.EssentialOilId1 = oil2.Id;
                 combo2.EssentialOilId2 = oil1.Id;
 
-                context.Comboes.Local.Add(combo);
-                context.Comboes.Local.Add(combo2);
-                context.SaveChanges();
-                //this.comboDataGrid.Items.Add();
+                try
+                {
+                    context.Comboes.Local.Add(combo);
+                    context.Comboes.Local.Add(combo2);
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    //Already exists, remove comboes from local
+                    context.Comboes.Local.Remove(combo);
+                    context.Comboes.Local.Remove(combo2); 
+                    context.SaveChanges();
+                }
+                
             }
             catch (Exception ex)
             {
-                //Already exists
+                //Already exists reload context
             }
-            //this.comboDataGrid.Items.Refresh();
+            
         }
 
         private void DeleteCompatibleOilButton_Click(object sender, RoutedEventArgs e)
@@ -169,18 +159,7 @@ namespace Apothecary
                 Combo[] comboes = context.Comboes.Local.Where<Combo>((
                     value, index) => ((value.EssentialOilId1==oil1.Id) && (value.EssentialOilId2==oil2.Id))
                     || ((value.EssentialOilId1 == oil2.Id) && (value.EssentialOilId2 == oil1.Id))).ToArray<Combo>();
-                /*
-                combo.EssentialOil1 = oil1;
-                combo.EssentialOil2 = oil2;
-                combo.EssentialOilId1 = oil1.Id;
-                combo.EssentialOilId2 = oil2.Id;
-
-                Combo combo2 = new Combo();
-                combo2.EssentialOil1 = oil2;
-                combo2.EssentialOil2 = oil1;
-                combo2.EssentialOilId1 = oil2.Id;
-                combo2.EssentialOilId2 = oil1.Id;
-                */
+                
                 context.Comboes.Local.Remove(comboes[0]);
                 context.Comboes.Local.Remove(comboes[1]);
                 context.SaveChanges();
@@ -192,14 +171,17 @@ namespace Apothecary
             }
         }
 
-        private void essentialOilDataGrid2_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            firstSelectedOil = e.AddedItems[0] as EssentialOil;
-        }
+        #endregion
 
         private void comboDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this.DeleteCompatibleOilButton.IsEnabled = true;
+        }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            LoadContext();
+            UpdateOilGrids();
         }
 
        
@@ -223,20 +205,6 @@ namespace Apothecary
 
             ret = String.Join(", ", strArray);
             return ret;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class EssentialOilConverter : IValueConverter
-    {
-
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            return ((EssentialOil)value).Name;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
