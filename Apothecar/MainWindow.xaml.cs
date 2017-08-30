@@ -23,25 +23,32 @@ namespace Apothecary
     public partial class MainWindow : Window
     {
 
-        private Model1Container context = new Model1Container();
-
+        //private Model1Container context = new Model1Container();
+        public ListViewModel listVM;
+        public EditDescriptorVM editVM;
+        public ComboEditVM comboVM;
 
         public MainWindow()
         {
             InitializeComponent();
-        }
+            System.Windows.Data.CollectionViewSource essentialOilViewSource =
+                ((System.Windows.Data.CollectionViewSource)(this.FindResource("essentialOilViewSource")));
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadContext();
+            listVM = new ListViewModel(essentialOilViewSource);
+            editVM = new EditDescriptorVM(essentialOilViewSource);
+            comboVM = new ComboEditVM(essentialOilViewSource);
+
+            this.ListTab.DataContext = listVM;
+            this.AddEditOilsTab.DataContext = editVM;
+            this.EditComboesTab.DataContext = comboVM;
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
-            this.context.Dispose();
+            //this.context.Dispose();
         }
-
+        /*
         private void LoadContext()
         {
             System.Windows.Data.CollectionViewSource essentialOilViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("essentialOilViewSource")));
@@ -185,7 +192,7 @@ namespace Apothecary
         }
 
        
-
+        */
     }
 
     public class DescriptorConverter : IValueConverter
