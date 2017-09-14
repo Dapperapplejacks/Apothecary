@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Apothecary
 {
-    class EssentialOilVM : INotifyPropertyChanged
+    public class EssentialOilVM : INotifyPropertyChanged
     {
         #region Properties
         EssentialOil _oil;
@@ -60,7 +60,7 @@ namespace Apothecary
                 RaisePropertyChanged("Name");
             }
         }
-
+        /*
         private bool isNew = true;
         public bool IsNew
         {
@@ -93,13 +93,18 @@ namespace Apothecary
                 RaisePropertyChanged("IsDeleted");
             }
         }
-
+        */
         #endregion
 
         #region Constructor
         public EssentialOilVM()
         {
             _oil = new EssentialOil();
+        }
+
+        public EssentialOilVM(EssentialOil oil)
+        {
+            _oil = oil;
         }
 
         #endregion

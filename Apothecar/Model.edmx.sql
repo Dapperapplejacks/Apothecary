@@ -2,13 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 08/11/2017 11:18:48
--- Generated from EDMX file: C:\Users\BD Production\Documents\Visual Studio 2013\Projects\Apothecary\Apothecar\Model.edmx
+-- Date Created: 09/07/2017 10:05:57
+-- Generated from EDMX file: C:\Users\dholt\Documents\Visual Studio 2013\Projects\Apothecary\Apothecar\Model.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-USE [ApoDB];
+USE [OilDB];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
@@ -23,8 +23,8 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_EssentialOilCombo1]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Comboes] DROP CONSTRAINT [FK_EssentialOilCombo1];
 GO
-IF OBJECT_ID(N'[dbo].[FK_DescriptorEssentialOil]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Descriptors] DROP CONSTRAINT [FK_DescriptorEssentialOil];
+IF OBJECT_ID(N'[dbo].[FK_EssentialOilDescriptor]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Descriptors] DROP CONSTRAINT [FK_EssentialOilDescriptor];
 GO
 
 -- --------------------------------------------------

@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:Apothecary="clr-namespace:Apothecary" mc:Ignorable="d" 
-        Title="Apothecary         " Height="247" Width="424" MinWidth="604" MinHeight="420">
+        Title="Apothecary         " Height="247" Width="424" MinWidth="604" MinHeight="420" Closing="OnClosing">
     <Window.Resources>
-        <CollectionViewSource x:Key="essentialOilViewSource"  d:DesignSource="{d:DesignInstance {x:Type Apothecary:EssentialOilVM}, CreateList=True}"/>
+        <CollectionViewSource x:Key="essentialOilViewSource" Source="{Binding ViewSource}"  d:DesignSource="{d:DesignInstance {x:Type Apothecary:EssentialOilVM}, CreateList=True}"/>
         <CollectionViewSource x:Key="essentialOilComboesViewSource" Source="{Binding Comboes, Source={StaticResource essentialOilViewSource}}"/>
         <CollectionViewSource x:Key="essentialOilDescriptorsViewSource" Source="{Binding Descriptors, Source={StaticResource essentialOilViewSource}}"/>
         <Apothecary:DescriptorConverter x:Key="DescriptorConverter"/>
@@ -29,27 +29,27 @@
             </Grid>
         </TabItem>
         <TabItem x:Name="AddEditOilsTab" Header="Add/Edit Oils">
-            <Grid Margin="0,0,-6,-3" DataContext="{StaticResource essentialOilViewSource}" Background="#FFE5E5E5">
+            <Grid Margin="0,0,-6,-3"  Background="#FFE5E5E5">
                 <DataGrid x:Name="essentialOilDataGrid1" AutoGenerateColumns="False" EnableRowVirtualization="True" 
-                          ItemsSource="{Binding}" Margin="10,10,0,105" RowDetailsVisibilityMode="VisibleWhenSelected" FontSize="20" 
-                          FontWeight="Bold" HorizontalAlignment="Left" Width="282">
+                          ItemsSource="{Binding Source={StaticResource essentialOilViewSource}}" Margin="10,10,0,105" RowDetailsVisibilityMode="VisibleWhenSelected" FontSize="20" 
+                          FontWeight="Bold" HorizontalAlignment="Left" Width="282" IsReadOnly="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="nameColumn1" Binding="{Binding Name}" Header="Essential Oil Names" Width="1*" FontWeight="Normal"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <DataGrid x:Name="descriptorsDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" 
-                          ItemsSource="{Binding Source={StaticResource essentialOilDescriptorsViewSource}}" 
+                          ItemsSource="{Binding Source={StaticResource essentialOilDescriptorsViewSource}}" DataContext="{StaticResource essentialOilViewSource}"
                           Margin="302,10,10,105" RowDetailsVisibilityMode="VisibleWhenSelected" FontSize="20" FontWeight="Bold">
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="contentColumn" Binding="{Binding Content}" Header="Descriptors" Width="1*" FontWeight="Normal"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Button Content="Save" HorizontalAlignment="Center" Margin="243,0,243,16" Width="75" Height="38" VerticalAlignment="Bottom" Background="#FF48FF48"/>
+                <Button Content="Save" HorizontalAlignment="Center" Command="{Binding Save}" Margin="243,0,243,16" Width="75" Height="38" VerticalAlignment="Bottom" Background="#FF48FF48"/>
                 <Label Content="Type in blank row to add new Oil/Descriptor, or press &quot;Backspace&quot; to delete row" HorizontalAlignment="Left" Margin="10,0,0,74" Width="442" Height="26" VerticalAlignment="Bottom"/>
             </Grid>
         </TabItem>
         <TabItem x:Name="EditComboesTab" Header="Edit Comboes" Margin="-2,0">
-            <Grid x:Name="EditComboesGrid" Background="#FFE5E5E5" DataContext="{StaticResource essentialOilViewSource}">
+            <Grid x:Name="EditComboesGrid" Background="#FFE5E5E5">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
@@ -57,24 +57,29 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <DataGrid x:Name="essentialOilDataGrid2" AutoGenerateColumns="False" EnableRowVirtualization="True" 
-                          ItemsSource="{Binding Mode=OneWay}" Margin="10,10,316,0" RowDetailsVisibilityMode="VisibleWhenSelected" Height="275" FontSize="20" FontWeight="Bold" VerticalAlignment="Top" IsReadOnly="True">
+                          ItemsSource="{Binding Source={StaticResource essentialOilViewSource}}" Margin="10,10,316,0" RowDetailsVisibilityMode="VisibleWhenSelected" 
+                          Height="275" FontSize="20" FontWeight="Bold" VerticalAlignment="Top" SelectedItem="{Binding SelectedOil1}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn x:Name="FirstOil" Binding="{Binding Name}" Header="First Oil" Width="1*" FontSize="20" FontWeight="Normal"/>
+                        <DataGridTextColumn x:Name="FirstOil" Binding="{Binding Name}" Header="First Oil" Width="1*" FontSize="20" FontWeight="Normal" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <ComboBox x:Name="essentialOilComboBox" DisplayMemberPath="Name" Margin="0,10,10,0" SelectedValuePath="Name" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right" Width="136">
+                <ComboBox x:Name="essentialOilComboBox" ItemsSource="{Binding ComboBoxOils}" 
+                          DisplayMemberPath="Name" Margin="0,10,10,0" SelectedValuePath="Name" Height="25" VerticalAlignment="Top" 
+                          HorizontalAlignment="Right" Width="136" SelectedItem="{Binding ComboBoxOil}">
                     <ComboBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel/>
                         </ItemsPanelTemplate>
                     </ComboBox.ItemsPanel>
                 </ComboBox>
-                <Button x:Name="AddCompatibleOilButton" Content="Add" Margin="0,45,126,0" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Background="#FF5CFF4B"/>
+                <Button x:Name="AddCompatibleOilButton" Content="Add" Command="{Binding Add}" Margin="0,45,126,0" Height="20" VerticalAlignment="Top" 
+                        HorizontalAlignment="Right" Width="75" Background="#FF5CFF4B"/>
                 <Label Content="Select Second Oil:" Margin="0,10,156,0" VerticalAlignment="Top" Height="25" HorizontalAlignment="Right" Width="155"/>
-                <Button x:Name="DeleteCompatibleOilButton" Content="Delete" Margin="0,250,126,0" VerticalAlignment="Top" IsEnabled="False" Background="#FFFF5151" HorizontalAlignment="Right" Width="75"/>
+                <Button x:Name="DeleteCompatibleOilButton" Content="Delete" Command="{Binding Delete}" Margin="0,250,126,0" VerticalAlignment="Top" 
+                        Background="#FFFF5151" HorizontalAlignment="Right" Width="75"/>
                 <DataGrid x:Name="comboDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" Margin="0,70,10,117" FontSize="20"
                           FontWeight="Bold" RowDetailsVisibilityMode="VisibleWhenSelected" HorizontalAlignment="Right" Width="301"
-                          ItemsSource="{Binding Source={StaticResource essentialOilComboesViewSource}}"  IsReadOnly="True">
+                          ItemsSource="{Binding Source={StaticResource essentialOilComboesViewSource}}"  IsReadOnly="True" SelectedItem="{Binding SelectedCombo}">
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="essentialOilId2Column" Binding="{Binding Path=\EssentialOil2.Name}" Header="Second Oil" 
                                             FontWeight="Normal" FontSize="20" Width="5*" IsReadOnly="True"/>

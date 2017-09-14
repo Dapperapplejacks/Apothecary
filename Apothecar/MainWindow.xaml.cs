@@ -28,12 +28,21 @@ namespace Apothecary
         public EditDescriptorVM editVM;
         public ComboEditVM comboVM;
 
+        public TabVMBase vm;
+
+        private CollectionViewSource _viewSource;
+        public CollectionViewSource ViewSource
+        {
+            get { return _viewSource;}
+            set { _viewSource = value; }
+        }
         public MainWindow()
         {
             InitializeComponent();
             System.Windows.Data.CollectionViewSource essentialOilViewSource =
                 ((System.Windows.Data.CollectionViewSource)(this.FindResource("essentialOilViewSource")));
-
+            /*
+            _viewSource = essentialOilViewSource;
             listVM = new ListViewModel(essentialOilViewSource);
             editVM = new EditDescriptorVM(essentialOilViewSource);
             comboVM = new ComboEditVM(essentialOilViewSource);
@@ -41,12 +50,21 @@ namespace Apothecary
             this.ListTab.DataContext = listVM;
             this.AddEditOilsTab.DataContext = editVM;
             this.EditComboesTab.DataContext = comboVM;
-        }
+            this.DataContext = this;*/
 
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+            vm = new TabVMBase(essentialOilViewSource);
+            this.DataContext = vm;
+        }
+        
+        private void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            base.OnClosing(e);
-            //this.context.Dispose();
+
+            vm.Dispose();
+            /*
+            listVM.Dispose();
+            editVM.Dispose();
+            comboVM.Dispose();
+             * */
         }
         /*
         private void LoadContext()
